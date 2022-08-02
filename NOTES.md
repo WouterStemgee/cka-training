@@ -119,6 +119,24 @@ Source: https://github.com/kodekloudhub/certified-kubernetes-administrator-cours
     - View settings using process monitoring: `ps -aux | grep kube-scheduler`
 
 #### kubelet
+- registers worker node with the kubernetes cluster
+- receives instructions to load a container or pod on the node 
+- requests container runtime engine (Docker, containerd, ...) to pull required image and run an instance
+- continues to monitor the state of the pod and the containers in it, reports to the kube-api server on a timely basis
+- Setup (**!** kubeadm does not deploy kubelets)
+  - download installer: `wget https://storage.googleapis.com/kubernetes-release/release/v1.13.0/bin/linux/amd64/kubelet`
+  - extract and run as a service: `kubelet.service`
+  - View settings using process monitoring: `ps -aux | grep kubelet`
+
+#### kube-proxy
+- process that runs on each node in the kubernetes cluster
+- look for new services and every time a new service is created it creates the appropriate rules using **iptables rules** on each node to forward traffic to the backend pods
+- Setup using `kubeadm`
+    - `kube-proxy-xxx` pods will run in `kube-system` namespace, deployed as a daemon set (ensures a single pod is always deployed on each node)
+- Setup without `kubeadm`
+  - download installer: `wget https://storage.googleapis.com/kubernetes-release/release/v1.13.0/bin/linux/amd64/kube-proxy`
+  - extract and run as a service: `kube-proxy.service`
+
 
 ### 2.2 API Primitives
 ### 2.3 Services & Other Network Primitives
